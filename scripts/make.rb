@@ -1,4 +1,4 @@
-#!/usr/bin/ruby1.9
+#!/usr/bin/ruby
 # Written by: Paulo H. "Taka" Torrens <paulo_torrens@hotmail.com>
 
 Libs = []
@@ -92,11 +92,11 @@ LD_FLAGS = -Os -Wl,--gc-sections -mmcu=$(MCU)
 AR_FLAGS = rcs
 
 USB=0
-PORT = /dev/ttyUSB$(USB)
+PORT = /dev/tty.usbmodemfa131
 MCU = atmega328p
 F_CPU = 16000000
 FORMAT = ihex
-UPLOAD_RATE = 57600
+UPLOAD_RATE = 115200
 MAX_SIZE = 30720
 
 OUTPUT = irmimic
@@ -117,8 +117,8 @@ $(OUTPUT).hex: $(OUTPUT).elf
 .PHONY: upload clean
 
 upload: all
-\tstty -F $(PORT) hupcl
-\t$(AVRDUDE) -p$(MCU) -cstk500v1 -P$(PORT) -b$(UPLOAD_RATE) -D -Uflash:w:$(OUTPUT).hex:i 
+\tstty -f $(PORT) hupcl
+\t$(AVRDUDE) -p$(MCU) -carduino -P$(PORT) -b$(UPLOAD_RATE) -D -Uflash:w:$(OUTPUT).hex:i 
 
 clean:
 \t@rm -f $(LIBRARIES) $(OUTPUT).elf $(OUTPUT).hex $(shell find . -follow -name "*.o")
